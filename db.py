@@ -1,4 +1,4 @@
-from sqlalchemy import Numeric, Date, create_engine, select
+from sqlalchemy import Numeric, Date, create_engine, select, insert
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 from dotenv import load_dotenv
 import os
@@ -37,6 +37,7 @@ class Currencies(Base):
 engine = create_engine(url, echo=True)
 
 stmt = select(GoldRates)
+insert_stmt = insert(GoldRates).values(pricedate='', price22k='', price24k='', price18k='')
 counter = 5
 
 with Session(engine) as session:
