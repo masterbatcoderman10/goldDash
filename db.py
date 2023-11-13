@@ -67,3 +67,5 @@ with Session(engine) as session:
     
     session.add_all([todays_gold_rate, todays_currency])
     session.commit()
+
+
