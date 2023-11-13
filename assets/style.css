@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    flex: 4;
+    height: 1000px;
+    background-color: rgb(233, 233, 233);
+    padding: 2%;
+    display: grid;
+    gap: 1% 4%;
+    grid-template-columns: 1fr 1fr;
+}
+
+.side {
+    flex: 1;
+}
+
+#gold-stats {
+    display: flex;
+    justify-content: space-between;
+    grid-row-start: 1;
+    height: auto;
+}
+
+#currency-stats {
+    display: flex;
+    justify-content: space-between;
+    grid-row-start: 1;
+}
+
+
+.label-value {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-value > * {
+    margin: 0;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: rgb(100, 100, 100);
+}
+
+.value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.detail {
+    font-size: 0.75rem;
+}

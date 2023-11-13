@@ -23,7 +23,7 @@ def get_currencies():
 
 def get_gold_rate_fig():
 
-    gold_rates = get_gold_rates()
+    gold_data = get_gold_rates()
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price22k'], name='22k'))
     fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price24k'], name='24k', visible=False))
@@ -76,7 +76,14 @@ def get_gold_rate_fig():
         }
     )
 
-    return fig
+    last_date = gold_data.index[-1]
+    #exract only date part
+    last_date = last_date.strftime('%d-%m-%Y')
+    todays_rate = '{:,.2f}'.format(gold_data.iloc[-1]['price22k'])
+    hundred_grams = '{:,.2f}'.format((float(todays_rate) * 100))
+    tenK_AED = '{:,.2f}'.format((10000 / float(todays_rate)))
+
+    return fig, (last_date, todays_rate, hundred_grams, tenK_AED)
 
 def get_currency_fig():
 
@@ -110,5 +117,11 @@ def get_currency_fig():
             },
         }
     )
+
+    last_date = currencies.index[-1]
+    last_date = last_date.strftime('%d-%m-%Y')
+    todays_rate = "{:,.2f}".format(currencies.iloc[-1]['price'])
+    tenK_INR = "{:,.2f}".format(10000 * float(todays_rate))
+    hundredK_INR = "{:,.2f}".format(100000 / float(todays_rate))
     
-    return fig
+    return fig, (last_date,todays_rate, tenK_INR, hundredK_INR)
