@@ -66,7 +66,7 @@ def get_gold_rate_fig():
                     "pad" : {"r" : 5, "t" : 10},
                     "showactive" : True,
                     'active' : 0,
-                    "x" : 1.1,
+                    "x" : 1.2,
                     "y" : 0.5,
                     "xanchor" : "right",
                     "yanchor" : "top",

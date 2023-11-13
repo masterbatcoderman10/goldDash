@@ -1,16 +1,19 @@
 .container {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
 }
 
 .content {
     flex: 4;
     height: 1000px;
-    background-color: rgb(233, 233, 233);
+    /* background-color: rgb(233, 233, 233); */
     padding: 2%;
     display: grid;
-    gap: 1% 4%;
+    gap: 2% 4%;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: max-content;
+    /* grid-auto-rows: minmax(auto, 5vh); */
 }
 
 .side {
@@ -21,13 +24,17 @@
     display: flex;
     justify-content: space-between;
     grid-row-start: 1;
-    height: auto;
+    max-height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    padding: 1%;
 }
 
 #currency-stats {
     display: flex;
     justify-content: space-between;
     grid-row-start: 1;
+    max-height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
 

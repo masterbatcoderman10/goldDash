@@ -86,15 +86,15 @@ app.layout = html.Div(children=[
         html.Div(className='side'),
         html.Div(className='content', children=[
             goldWidget(),
+            currencyWidget(),
             html.Div(id='gold-graph', children=[
                 dcc.Graph(figure=gold_fig, id='gold-rate-graph')
             ]),
-            currencyWidget(),
             html.Div(id='currency-graph', children=[
                 dcc.Graph(figure=currency_fig, id='currency-rate-graph')
             ]),
         ]),
-        html.Div(className='side')
+        html.Div(className='side'),
     ])
 ])
 
