@@ -5,12 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import datetime as dt
+import re
+import time
 
 def init_driver():
-    chrome_options = ChromeOptions()
+    chrome_options = Options()
     chrome_options.add_argument("--headless")
     service = Service("./chromedriver")
-    driver = Chrome(service=service, options=chrome_options) # replace with the path to your chromedriver
+    driver = webdriver.Chrome(service=service, options=chrome_options) # replace with the path to your chromedriver
     return driver
 
 def get_data(driver):
@@ -28,6 +30,13 @@ def get_data(driver):
     currency_xpath = "//div[@class = 'draft-rates-main-wrapper-nf']/div[2]/table/tbody/tr[1]/td[2]"
     currency = driver.find_element(by=By.XPATH, value=currency_xpath).text
 
+    currency_val = re.search(r'\d\d.\d\d', currency).group()
+
     driver.quit()
 
-    return today, gold_prices, currency
+    return today, gold_prices, currency_val
+
+# start = time.time()
+# print(get_data(init_driver()))
+# end = time.time()
+# print(end - start)
