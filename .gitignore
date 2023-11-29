@@ -1,4 +1,8 @@
 chromedriver
+geckodriver
 .env
 my_env/
 __pycache__/
+logs.txt
+private
+.DS_Store
