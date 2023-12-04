@@ -4,6 +4,7 @@ from dash import dcc
 from utils import *
 
 app = dash.Dash(__name__)
+server = app.server
 
 gold_fig, gold_values = get_gold_rate_fig()
 currency_fig, curr_values = get_currency_fig()
