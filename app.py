@@ -5,10 +5,6 @@ from utils import *
 
 app = dash.Dash(__name__)
 server = app.server
-
-gold_fig, gold_values = get_gold_rate_fig()
-currency_fig, curr_values = get_currency_fig()
-
 def nav():
 
     nav = html.Nav(
@@ -40,7 +36,7 @@ def nav():
 
     return nav
 
-def goldWidget():
+def goldWidget(gold_values):
 
     date, rate, hundred_grams, tenK_AED = gold_values
     widget = html.Div(id='gold-stats', children=[
@@ -61,7 +57,7 @@ def goldWidget():
     return widget
 
 #make similar currency widget
-def currencyWidget():
+def currencyWidget(curr_values):
 
     date, rate, tenK_INR, hundredK_INR = curr_values
     widget = html.Div(id='currency-stats', children=[
@@ -81,20 +77,27 @@ def currencyWidget():
 
     return widget
 
-app.layout = html.Div(children=[
-    nav(),
-    html.Div(className='container', children=[
-        html.Div(className='side'),
-        html.Div(className='content', children=[
-            goldWidget(),
-            currencyWidget(),
+def content_widget():
+
+    gold_fig, gold_values = get_gold_rate_fig()
+    currency_fig, curr_values = get_currency_fig()
+
+    return html.Div(className='content', children=[
+            goldWidget(gold_values=gold_values),
+            currencyWidget(curr_values=curr_values),
             html.Div(id='gold-graph', children=[
                 dcc.Graph(figure=gold_fig, id='gold-rate-graph')
             ]),
             html.Div(id='currency-graph', children=[
                 dcc.Graph(figure=currency_fig, id='currency-rate-graph')
             ]),
-        ]),
+        ])
+
+app.layout = html.Div(children=[
+    nav(),
+    html.Div(className='container', children=[
+        html.Div(className='side'),
+        content_widget(),
         html.Div(className='side'),
     ])
 ])
