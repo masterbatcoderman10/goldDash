@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
 from db_tables import *
 import os
 from dotenv import load_dotenv
@@ -21,13 +22,21 @@ def get_currencies():
     engine = init_engine()
     return pd.read_sql(select(Currencies), engine, parse_dates=['date'], index_col=['date'])
 
-def get_gold_rate_fig():
+def get_data():
+    engine = init_engine()
+    with Session(engine) as session:
+        gold_data = pd.read_sql(select(GoldRates), session.bind, parse_dates=['pricedate'], index_col=['pricedate'])
+        currency_data = pd.read_sql(select(Currencies), session.bind, parse_dates=['date'], index_col=['date'])
 
-    gold_data = get_gold_rates()
+    engine.dispose()
+    return gold_data, currency_data
+
+def get_gold_rate_fig(gold_data):
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price22k'], name='22k'))
-    fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price24k'], name='24k', visible=False))
-    fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price18k'], name='18k', visible=False))
+    # fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price24k'], name='24k', visible=False))
+    # fig.add_trace(go.Scatter(x=gold_data.index, y=gold_data['price18k'], name='18k', visible=False))
     time_buttons = [
         {"count" : 1, 'step' : 'month', 'stepmode' : 'backward', 'label' : '1M'},
         #1 week
@@ -35,11 +44,12 @@ def get_gold_rate_fig():
         #6 months
         {"count" : 6, 'step' : 'month', 'stepmode' : 'backward', 'label' : '6M'},
     ]
-    trace_buttons = [
-        {"label" : "22k", "method" : "update", "args" : [{"visible" : [True, False, False]}, {"title" : "22K Gold Rates in AED"}]},
-        {"label" : "24k", "method" : "update", "args" : [{"visible" : [False, True, False]}, {"title" : "24K Gold Rates in AED"}]},
-        {"label" : "18k", "method" : "update", "args" : [{"visible" : [False, False, True]}, {"title" : "18K Gold Rates in AED"}]},
-    ]
+    # trace_buttons = [
+    #     {"label" : "22k", "method" : "update", "args" : [{"visible" : [True, False, False]}, {"title" : "22K Gold Rates in AED"}]},
+    #     {"label" : "24k", "method" : "update", "args" : [{"visible" : [False, True, False]}, {"title" : "24K Gold Rates in AED"}]},
+    #     {"label" : "18k", "method" : "update", "args" : [{"visible" : [False, False, True]}, {"title" : "18K Gold Rates in AED"}]},
+    # ]
+
 
     fig.update_layout(
         {
@@ -58,21 +68,28 @@ def get_gold_rate_fig():
                 "text" : "Gold Rates in AED",
                 "x" : 0.5,
             },
+            #add margin
+            "margin" : {
+                "b" : 20,
+                "t" : 20,
+                "r" : 20,
+                "l" : 20,
+            },
             #add buttons
-            "updatemenus" : [
-                {
-                    "type" : "dropdown",
-                    "direction" : "down",
-                    "pad" : {"r" : 5, "t" : 10},
-                    "showactive" : True,
-                    'active' : 0,
-                    "x" : 1.2,
-                    "y" : 0.5,
-                    "xanchor" : "right",
-                    "yanchor" : "top",
-                    "buttons" : trace_buttons,
-                }
-            ],
+            # "updatemenus" : [
+            #     {
+            #         "type" : "dropdown",
+            #         "direction" : "down",
+            #         "pad" : {"r" : 5, "t" : 10},
+            #         "showactive" : True,
+            #         'active' : 0,
+            #         "x" : 1.2,
+            #         "y" : 0.5,
+            #         "xanchor" : "right",
+            #         "yanchor" : "top",
+            #         "buttons" : trace_buttons,
+            #     }
+            # ],
         }
     )
 
@@ -85,9 +102,8 @@ def get_gold_rate_fig():
 
     return fig, (last_date, todays_rate, hundred_grams, tenK_AED)
 
-def get_currency_fig():
+def get_currency_fig(currencies):
 
-    currencies = get_currencies()
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=currencies.index, y=currencies['price'], name='INR'))
     #time buttons
@@ -114,6 +130,13 @@ def get_currency_fig():
             "title" : {
                 "text" : "AED to INR",
                 "x" : 0.5,
+            },
+            #add margin
+            "margin" : {
+                "b" : 20,
+                "t" : 20,
+                "r" : 20,
+                "l" : 20,
             },
         }
     )

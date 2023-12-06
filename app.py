@@ -1,10 +1,13 @@
 import dash
+import datetime
 from dash import html
 from dash import dcc
 from utils import *
 
 app = dash.Dash(__name__)
 server = app.server
+gold_data = ''
+currency_data = ''
 def nav():
 
     nav = html.Nav(
@@ -79,8 +82,10 @@ def currencyWidget(curr_values):
 
 def content_widget():
 
-    gold_fig, gold_values = get_gold_rate_fig()
-    currency_fig, curr_values = get_currency_fig()
+    gold_data, currency_data = get_data()
+
+    gold_fig, gold_values = get_gold_rate_fig(gold_data)
+    currency_fig, curr_values = get_currency_fig(currency_data)
 
     return html.Div(className='content', children=[
             goldWidget(gold_values=gold_values),
@@ -93,14 +98,18 @@ def content_widget():
             ]),
         ])
 
-app.layout = html.Div(children=[
-    nav(),
-    html.Div(className='container', children=[
-        html.Div(className='side'),
-        content_widget(),
-        html.Div(className='side'),
+def serve_layout():
+
+    return html.Div(children=[
+        nav(),
+        html.Div(className='container', children=[
+            html.Div(className='side'),
+            content_widget(),
+            html.Div(className='side'),
+        ])
     ])
-])
+
+app.layout = serve_layout
 
 if __name__ == '__main__':
     app.run_server(debug=False)
