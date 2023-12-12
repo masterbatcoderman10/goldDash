@@ -69,8 +69,8 @@ def currencyWidget(curr_values):
                 html.P(className='value', children=[f'{rate}', html.Span(className='detail', children=[' AED'])]),
             ]),
             html.Div(className='label-value', children=[
-                html.P(className='label', children=['10,000 INR']),
-                html.P(className='value', children=[f'{tenK_INR}', html.Span(className='detail', children=[' AED'])]),
+                html.P(className='label', children=['10,000 AED']),
+                html.P(className='value', children=[f'{tenK_INR}', html.Span(className='detail', children=[' INR'])]),
             ]),
             html.Div(className='label-value', children=[
                 html.P(className='label', children=['100,000 INR']),

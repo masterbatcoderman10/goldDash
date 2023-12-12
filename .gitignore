@@ -4,5 +4,6 @@ geckodriver
 my_env/
 __pycache__/
 logs.txt
+crontest.txt
 private
 .DS_Store
